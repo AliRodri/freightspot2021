@@ -4,20 +4,20 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'audited'
+gem 'bootsnap'
 gem 'enum_help'
 gem 'friendly_id'
-gem 'bootsnap'
 gem 'jbuilder'
-gem 'paranoia'
 gem 'name_of_person'
+gem 'paranoia'
 gem 'pg'
 gem 'puma'
 gem 'rails', '6.1.3.1'
 gem 'sass-rails'
+gem 'simple_form'
 gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'
-gem 'simple_form'
 
 group :development, :test do
   gem 'annotate'
