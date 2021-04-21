@@ -1,24 +1,35 @@
-# README
+![Freightspot Logo](app/assets/images/logo-login.png)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
+You have a little library and you love to share. But where *did* your copy of *Americanah* disappear to? Can anyone lend you some ebooks for your upcoming trip? You trust your friend's taste (you would read anything they own), but what's in their collection?
 
-Things you may want to cover:
+## Ruby version
+sdfsdfsdfsdf
 
-* Ruby version
+## Database creation
+- [x] Example
 
-* System dependencies
+### Coming soon:
+- [ ] Send borrow requests and reminders via text or email
+- [ ] Bulk import and export books via CSV
 
-* Configuration
+## Stack
+- Ruby on Rails
+- PostgreSQL
+- JavaScript: jQuery and AJAX
+- Google Books API
+- Twilio SMS
+- Postmark API
 
-* Database creation
+## Testing Suite:
+- RSpec
+- shoulda-matchers
+- FactoryGirl
+- Database Cleaner
+- Travis CI
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
+## Contributors
+- [Ana Cecilia](https://github.com/camillevilla)
+- [Ivan Ali Rodriguez Vasquez](https://github.com/camillevilla)
 
 * ...
