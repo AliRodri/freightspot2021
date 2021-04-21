@@ -6,13 +6,13 @@ ruby '2.7.2'
 gem 'audited'
 gem 'bootsnap'
 gem 'jbuilder'
+gem 'paranoia'
 gem 'pg'
 gem 'puma'
 gem 'rails', '6.1.3.1'
 gem 'sass-rails'
 gem 'turbolinks'
 gem 'webpacker'
-gem 'paranoia'
 
 group :development, :test do
   gem 'annotate'
@@ -39,8 +39,11 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'coveralls'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
+  gem 'simplecov'
+  gem 'timecop'
   gem 'webdrivers'
 end
 
