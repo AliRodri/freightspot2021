@@ -22,18 +22,23 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'rails-controller-testing'
+  gem 'rspec_junit_formatter'
   gem 'rspec-rails'
 end
 
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'flamegraph'
   gem 'listen'
+  gem 'memory_profiler'
   gem 'rack-mini-profiler'
   gem 'railroady'
   gem 'rubocop'
+  gem 'rubocop-rspec', require: false
   gem 'spring'
   gem 'spring-watcher-listen'
+  gem 'stackprof'
   gem 'web-console'
 end
 
