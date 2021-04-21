@@ -17,6 +17,7 @@ gem 'sass-rails'
 gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'
+gem 'simple_form'
 
 group :development, :test do
   gem 'annotate'
