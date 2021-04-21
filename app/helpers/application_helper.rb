@@ -1,4 +1,18 @@
 module ApplicationHelper
+  def action?(*action)
+    action.include?(params[:action])
+  end
+
+  def controller?(*controller)
+    controller.include?(params[:controller])
+  end
+
+  def pack_exists?(filename)
+    puts "\n\n\nRUTA:"
+    puts File.join(Rails.root, 'app', 'javascript', 'packs', "#{filename}.js")
+    File.exists?(File.join(Rails.root, 'app', 'javascript', 'packs', "#{filename}.js"))
+  end
+
   def toastr_flash
     flash.each_with_object([]) do |(type, message), flash_messages|
       type = alert_type(type)

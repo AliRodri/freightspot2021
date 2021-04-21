@@ -4,7 +4,7 @@
 // that code so it'll be compiled.
 
 import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
+// import Turbolinks from "turbolinks"
 import 'bootstrap/dist/js/bootstrap'
 import 'bootstrap/dist/css/bootstrap'
 import "@fortawesome/fontawesome-free/css/all"
@@ -21,10 +21,13 @@ import toastr from 'toastr'
 import Swal from 'sweetalert2'
 require('moment');
 
+window.jQuery = $;
+window.$ = $;
 global.$ = jQuery;
 window.Rails = Rails;
 global.toastr = toastr;
 global.Swal = Swal;
+window.toastr = toastr
 window.ApexCharts = ApexCharts; // return apex chart
 import 'bootstrap'
 import appInit from './metronic/app.init';
