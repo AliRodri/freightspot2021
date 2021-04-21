@@ -145,6 +145,8 @@ GEM
     docile (1.3.5)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    enum_help (0.0.17)
+      activesupport (>= 3.0.0)
     erubi (1.10.0)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
@@ -154,6 +156,8 @@ GEM
     ffaker (2.18.0)
     ffi (1.15.0)
     flamegraph (0.9.5)
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     http-accept (1.7.0)
@@ -184,6 +188,8 @@ GEM
     msgpack (1.4.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
+    name_of_person (1.1.1)
+      activesupport (>= 5.2.0)
     netrc (0.11.0)
     nio4r (2.5.7)
     nokogiri (1.11.3)
@@ -311,6 +317,13 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
+    slim-rails (3.2.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 5.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -326,6 +339,7 @@ GEM
     sync (0.5.0)
     sys-uname (1.2.2)
       ffi (~> 1.1)
+    temple (0.8.2)
     term-ansicolor (1.7.1)
       tins (~> 1.0)
     thor (1.1.0)
@@ -378,12 +392,15 @@ DEPENDENCIES
   coveralls
   cucumber-rails
   database_cleaner
+  enum_help
   factory_bot_rails
   ffaker
   flamegraph
+  friendly_id
   jbuilder
   listen
   memory_profiler
+  name_of_person
   paranoia
   pg
   puma
@@ -399,6 +416,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   simplecov
+  slim-rails
   spring
   spring-watcher-listen
   stackprof
