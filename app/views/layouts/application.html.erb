@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
     <title>Freightspot</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -11,6 +14,20 @@
   </head>
 
   <body>
+  <div class="container">
+    <div>Single View
+      <small data-localize="dashboard.WELCOME"></small>
+    </div>
+    <!-- START Language list-->
+    <div class="ml-auto">
+      <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle dropdown-toggle-nocaret" type="button" data-toggle="dropdown">English</button>
+        <div class="dropdown-menu dropdown-menu-right-forced animated fadeInUpShort" role="menu"><a class="dropdown-item" href="#" data-set-lang="en">English</a><a class="dropdown-item" href="#" data-set-lang="es">Spanish</a>
+        </div>
+      </div>
+    </div>
+    <!-- END Language list-->
+  </div>
     <%= yield %>
   </body>
 </html>
