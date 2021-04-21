@@ -12,6 +12,7 @@ gem 'rails', '6.1.3.1'
 gem 'sass-rails'
 gem 'turbolinks'
 gem 'webpacker'
+gem 'paranoia'
 
 group :development, :test do
   gem 'annotate'
