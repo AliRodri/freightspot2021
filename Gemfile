@@ -3,18 +3,19 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
 
-gem 'rails', '6.1.3.1'
+gem 'bootsnap'
+gem 'jbuilder'
 gem 'pg'
 gem 'puma'
+gem 'rails', '6.1.3.1'
 gem 'sass-rails'
-gem 'webpacker'
 gem 'turbolinks'
-gem 'jbuilder'
-gem 'bootsnap'
+gem 'webpacker'
 
 group :development, :test do
   gem 'annotate'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'ffaker'
@@ -25,13 +26,13 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'listen'
+  gem 'rack-mini-profiler'
   gem 'railroady'
   gem 'rubocop'
+  gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
-  gem 'rack-mini-profiler'
-  gem 'listen'
-  gem 'spring'
 end
 
 group :test do
@@ -41,4 +42,4 @@ group :test do
   gem 'webdrivers'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
