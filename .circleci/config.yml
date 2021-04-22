@@ -14,7 +14,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: freightspot2021_test
-    working_directory: ~/freightspot2021
+    working_directory: ~/freightspot
     steps:
       - checkout
       - run: |
