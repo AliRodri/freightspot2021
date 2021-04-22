@@ -1,58 +1,98 @@
 version: 2.1
-
-orbs:
-  ruby: circleci/ruby@1.1.0
-  node: circleci/node@2
-
 jobs:
   build:
-    working_directory: ~/freightspot
     docker:
-      - image: cimg/ruby:2.7.2
-    steps:
-      - checkout
-      - ruby/install-deps
-      # Store bundle cache
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
-  test:
-    parallelism: 3
-    docker:
-      - image: cimg/ruby:2.7-node
-      - image: circleci/postgres:11
+      - image: circleci/ruby:2.7.2-node-browsers
         environment:
-          POSTGRES_USER: freightspot
+          PG_HOST: localhost
+          PG_USERNAME: postgres
+          RAILS_ENV: test
+          RACK_ENV: test
+          PARALLEL_WORKERS: "1"
+      - image: circleci/postgres:11.9
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: freightspot2021_test
-          POSTGRES_PASSWORD: password
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: circleci-demo-ruby
-      PGPASSWORD: ""
-      RAILS_ENV: test
+    working_directory: ~/freightspot
     steps:
       - checkout
-      - ruby/install-deps
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          curl -o- -L https://yarnpkg.com/install.sh | bash
+      - restore_cache:
+          name: Restore gem cache
+          keys:
+            - gem-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v4-{{ arch }}-{{ .Branch }}
+            - gem-cache-v4-{{ arch }}
+            - gem-cache-v4
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-v4-{{ arch }}-{{ .Branch }}
+            - yarn-cache-v4-{{ arch }}
+            - yarn-cache-v4
       - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: Set up assets cache key
+          command: find app/javascript -type f -exec md5sum {} \; > dependency_checksum
+      - restore_cache:
+          name: Restore assets cache
+          keys:
+            - assets-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "dependency_checksum" }}
+            - assets-cache-v4-{{ arch }}-{{ .Branch }}
+            - assets-cache-v4-{{ arch }}
+            - assets-cache-v4
       - run:
-          name: Database setup
-          command: bundle exec rails db:schema:load --trace
-      # Run rspec in parallel
-      - ruby/rspec-test
-      - ruby/rubocop-check
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
+          name: Install gem dependencies
+          command: |
+            gem install bundler:2.1.1
+            bundle check || bundle install --jobs=6 --retry=3 --path vendor/bundle
+      - run:
+          name: Install yarn dependencies
+          command: yarn install --ignore-engines --frozen-lockfile
+      - run:
+          name: Precompile assets
+          command: RAILS_ENV=test bundle exec rails webpacker:compile
+      - save_cache:
+          name: Save gem cache
+          paths:
+            - vendor/bundle
+          key: gem-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+      - save_cache:
+          name: Save yarn cache
+          paths:
+            - ~/.cache/yarn
+          key: yarn-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - save_cache:
+          name: Save assets cache
+          paths:
+            - public/packs-test
+            - tmp/cache/webpacker
+          key: assets-cache-v4-{{ arch }}-{{ .Branch }}-{{ checksum "dependency_checksum" }}
+      - run:
+          name: Set up DB
+          command: bundle exec rails db:drop db:create db:structure:load --trace
+      - run:
+          name: Run zeitwerk check
+          command: bundle exec rails zeitwerk:check
+      - run:
+          name: Run tests
+          command: |
+            bundle exec rails test
+            set +e
+            bundle exec rails test:system
+      - store_artifacts:
+          path: tmp/screenshots
+          destination: screenshots
+      - run:
+          name: Run standardrb check
+          command: bundle exec standardrb --format progress
+      - run:
+          name: Run ERB lint check
+          command: bundle exec erblint app/views/**/*.html.erb
+      - run:
+          name: Run prettier-standard check
+          command: yarn run --ignore-engines prettier-standard --check "app/**/*.js"
