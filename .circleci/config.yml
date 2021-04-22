@@ -9,50 +9,34 @@ jobs:
     working_directory: ~/freightspot
     docker:
       - image: cimg/ruby:2.7.2
-    steps:
-      - checkout
-      - ruby/install-deps
-      # Store bundle cache
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
-  test:
-    parallelism: 3
-    docker:
-      - image: cimg/ruby:2.7-node
-      - image: circleci/postgres:11
-        environment:
-          POSTGRES_USER: circleci-demo-ruby
-          POSTGRES_DB: rails_blog_test
-          POSTGRES_PASSWORD: password
     environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: circleci-demo-ruby
-      PGPASSWORD: ""
-      RAILS_ENV: test
+      TZ: "/usr/share/zoneinfo/America/Mexico_City"
+      RAILS_ENV: "test"
+      RACK_ENV: "test"
     steps:
       - checkout
-      - ruby/install-deps
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: Database setup
-          command: bundle exec rails db:schema:load --trace
-      # Run rspec in parallel
-      - ruby/rspec-test
-      - ruby/rubocop-check
+      #install sqlite dependency
+      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+      # Bundle install
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
 
+      # Setup database
+      - run: cp config/database.yml.ci config/database.yml
+      - run: bundle exec rake db:create db:schema:load --trace
+
+      # Yarn install
+      - run: bin/yarn install --cache-folder vendor/node_modules
+
+      # Generate assets
+      - run: bin/webpack
+      - run: bundle exec rails webpacker:compile
+
+      # Unit tests
+      - run:
+          shell: /bin/bash
+          command: bundle exec rake test --trace
 workflows:
   version: 2
-  build_and_test:
+  commit:
     jobs:
       - build
-      - test:
-          requires:
-            - build
