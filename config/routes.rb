@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :client do
+    root 'dashboard#show'
+  end
   namespace :admin do
     root 'dashboard#show'
   end
