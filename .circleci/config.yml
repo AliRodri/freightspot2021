@@ -6,13 +6,13 @@ jobs:
         environment:
           PG_HOST: localhost
           PG_USERNAME: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
           RAILS_ENV: test
           RACK_ENV: test
           PARALLEL_WORKERS: "1"
       - image: circleci/postgres:11.9
         environment:
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: freightspot2021_test
     working_directory: ~/freightspot2021
     steps:
